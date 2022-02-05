@@ -30,6 +30,17 @@ export class AppComponent implements OnInit {
         err => console.error(` ${err}`,
           () => console.log(`completed!`))
       );
+      console.log(`Example #3: catchError(this.errorHandler()) eg EMPTY`)
+      /**
+       * Catch and replace
+       *
+       * return this.http.get<Product[](this.productsUrl)
+       *  .pipe(
+       *    catchError(err);
+       *    return of ([{id:1, prodName: 'cart'},
+       *                {id:2, prodName: 'hammer'}]);
+       * });
+       */
   }
 
 }
