@@ -43,7 +43,7 @@ export class AppComponent implements OnInit {
        */
 
       /**
-       * Catch and Rethrow
+       * Catch and Rethrow `throwError(err)`
        * return this.http.get<Product[](this.productsUrl)
        *  .pipe(
        *    catchError(err => {
