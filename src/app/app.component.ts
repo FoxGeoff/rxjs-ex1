@@ -41,6 +41,16 @@ export class AppComponent implements OnInit {
        *                {id:2, prodName: 'hammer'}]);
        * });
        */
+
+      /**
+       * Catch and Rethrow
+       * return this.http.get<Product[](this.productsUrl)
+       *  .pipe(
+       *    catchError(err => {
+       *      console.error(err);
+       *      return throwError(err);
+       * });
+       */
   }
 
 }
