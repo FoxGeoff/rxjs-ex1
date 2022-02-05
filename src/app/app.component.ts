@@ -12,7 +12,7 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     // of(2, 4, 6, 8, 5).subscribe(console.log);
 
-    // Example #2
+    console.log(`Example #2`),
     from([10, 20, 30, 5])
       .pipe(
         tap(item => console.log(`Org: ${item}`)),
@@ -27,7 +27,7 @@ export class AppComponent implements OnInit {
         take(5)
       ).subscribe(
         item => console.log(`result: ${item}`),
-        err => console.error(`eror ${err}`,
+        err => console.error(` ${err}`,
           () => console.log(`completed!`))
       );
   }
