@@ -6,12 +6,20 @@ import { catchError, map, skip, take, tap } from 'rxjs/operators';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
+
+export interface prodApi() {
+  prod: Product[];
+  tot
+}
+
+
 export class AppComponent implements OnInit {
   title = 'rxjs-ex1';
 
   ngOnInit() {
     // of(2, 4, 6, 8, 5).subscribe(console.log);
 
+    /*
     console.log(`Example #2`),
     from([10, 20, 30, 5])
       .pipe(
@@ -30,7 +38,7 @@ export class AppComponent implements OnInit {
         err => console.error(` ${err}`,
           () => console.log(`completed!`))
       );
-      console.log(`Example #3: catchError(this.errorHandler()) eg EMPTY`)
+      console.log(`Example #3: catchError(this.errorHandler()) eg EMPTY`) */
       /**
        * Catch and replace
        *
@@ -51,6 +59,10 @@ export class AppComponent implements OnInit {
        *      return throwError(err);
        * });
        */
+
+      //Example to transform an objetc ProdApi {prod[], total}
+
+
   }
 
 }
