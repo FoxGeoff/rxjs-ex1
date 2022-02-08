@@ -14,7 +14,7 @@ export class CatagoryData {
 export class ProdApiData {
   static prodApi: ProdApi[] = [
     {
-      total: 4,
+      total: 40,
       prodList: [
         { id: 10, name: `Apple`, categoryId: 1 },
         { id: 20, name: `Orange`, categoryId: 1 },
@@ -53,7 +53,7 @@ export class AppComponent implements OnInit {
   prodApi$ = of(ProdApiData.prodApi);
   prodCats$ = of(CatagoryData.catergories);
 
- // Example #3 Add Category to a ProductApi
+  // Example #3 Add Category to a ProductApi
   productApiWithProdCats$ = combineLatest([
     this.prodApi$,
     this.prodCats$
@@ -61,12 +61,12 @@ export class AppComponent implements OnInit {
     map(([productApi, prodCats]) => productApi
       .map(api => api.prodList
         .map(product => ({
-        ...product,
-        category: prodCats.find(c => product.categoryId === c.id).name,
+          ...product,
+          category: prodCats.find(c => product.categoryId === c.id).name,
         }) as Product)
       )
     ),
-    take(1)
+    tap(console.log)
   )
 
   ngOnInit() {
@@ -78,7 +78,17 @@ export class AppComponent implements OnInit {
     of(this.prodCats$).subscribe(console.log);
 
     this.productApiWithProdCats$.subscribe(
-      data => console.log(data[0])
+      data => {
+        console.log(`Product (with Categories):`, data[0] as ProdApi);
+        // error code
+      }
+    )
+
+    this.prodApi$.subscribe(
+      data => {
+        const total = data[0].total;
+        console.log(`Total:`, total);
+      }
     )
 
     // of(2, 4, 6, 8, 5).subscribe(console.log);
