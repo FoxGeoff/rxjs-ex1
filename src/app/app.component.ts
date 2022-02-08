@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { stringify } from 'querystring';
-import { from, of } from 'rxjs';
+import { combineLatest, from, of } from 'rxjs';
 import { catchError, map, skip, take, tap } from 'rxjs/operators';
 
 
@@ -12,7 +12,7 @@ export class CatagoryData {
   ];
 }
 export class ProdApiData {
-  static prodApi: ProdApi =
+  static prodApi: ProdApi[] = [
     {
       total: 4,
       prodList: [
@@ -22,6 +22,7 @@ export class ProdApiData {
         { id: 40, name: `Fork`, categoryId: 2 }
       ]
     }
+  ]
 }
 
 export interface ProdApi {
@@ -33,6 +34,7 @@ export interface Product {
   id: number;
   name: string;
   categoryId: number;
+  category?: string;
 }
 
 export interface Category {
@@ -48,19 +50,36 @@ export interface Category {
 export class AppComponent implements OnInit {
   title = 'rxjs-ex1';
 
-  prodApi = ProdApiData.prodApi;
-  prodCats = CatagoryData.catergories;
+  prodApi$ = of(ProdApiData.prodApi);
+  prodCats$ = of(CatagoryData.catergories);
+
+ // Example #3 Add Category to a ProductApi
+  productApiWithProdCats$ = combineLatest([
+    this.prodApi$,
+    this.prodCats$
+  ]).pipe(
+    map(([productApi, prodCats]) => productApi
+      .map(api => api.prodList
+        .map(product => ({
+        ...product,
+        category: prodCats.find(c => product.categoryId === c.id).name,
+        }) as Product)
+      )
+    ),
+    take(1)
+  )
 
   ngOnInit() {
     //Example #3 to transform an objet ProdApi {prod[], total}
 
 
-    of(this.prodApi).subscribe(console.log);
+    of(this.prodApi$).subscribe(console.log);
 
-    of(this.prodCats).subscribe(console.log);
+    of(this.prodCats$).subscribe(console.log);
 
-
-
+    this.productApiWithProdCats$.subscribe(
+      data => console.log(data[0])
+    )
 
     // of(2, 4, 6, 8, 5).subscribe(console.log);
 
