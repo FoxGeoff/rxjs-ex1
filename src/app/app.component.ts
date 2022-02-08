@@ -1,18 +1,50 @@
 import { Component, OnInit } from '@angular/core';
+import { stringify } from 'querystring';
 import { from, of } from 'rxjs';
 import { catchError, map, skip, take, tap } from 'rxjs/operators';
+
+
+
+export class CatagoryData {
+  static catergories: Catagory[] = [
+    { id: 1, name: `Food` },
+    { id: 2, name: 'Tableware' }
+  ];
+}
+export class ProdApiData {
+  static prodApi: ProdApi =
+    {
+      total: 4,
+      prodList: [
+        { id: 10, name: `Apple`, categoryId: 1 },
+        { id: 20, name: `Orange`, categoryId: 1 },
+        { id: 30, name: `Knife`, categoryId: 2 },
+        { id: 40, name: `Fork`, categoryId: 2 }
+      ]
+    }
+}
+
+export interface ProdApi {
+  prodList: Product[],
+  total: number,
+}
+
+export interface Product {
+  id: number;
+  name: string;
+  categoryId: number;
+}
+
+export interface Category {
+  id: number,
+  name: string,
+}
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-
-export interface prodApi() {
-  prod: Product[];
-  tot
-}
-
-
 export class AppComponent implements OnInit {
   title = 'rxjs-ex1';
 
@@ -39,28 +71,28 @@ export class AppComponent implements OnInit {
           () => console.log(`completed!`))
       );
       console.log(`Example #3: catchError(this.errorHandler()) eg EMPTY`) */
-      /**
-       * Catch and replace
-       *
-       * return this.http.get<Product[](this.productsUrl)
-       *  .pipe(
-       *    catchError(err);
-       *    return of ([{id:1, prodName: 'cart'},
-       *                {id:2, prodName: 'hammer'}]);
-       * });
-       */
+    /**
+     * Catch and replace
+     *
+     * return this.http.get<Product[](this.productsUrl)
+     *  .pipe(
+     *    catchError(err);
+     *    return of ([{id:1, prodName: 'cart'},
+     *                {id:2, prodName: 'hammer'}]);
+     * });
+     */
 
-      /**
-       * Catch and Rethrow `throwError(err)`
-       * return this.http.get<Product[](this.productsUrl)
-       *  .pipe(
-       *    catchError(err => {
-       *      console.error(err);
-       *      return throwError(err);
-       * });
-       */
+    /**
+     * Catch and Rethrow `throwError(err)`
+     * return this.http.get<Product[](this.productsUrl)
+     *  .pipe(
+     *    catchError(err => {
+     *      console.error(err);
+     *      return throwError(err);
+     * });
+     */
 
-      //Example to transform an objetc ProdApi {prod[], total}
+    //Example to transform an objetc ProdApi {prod[], total}
 
 
   }
