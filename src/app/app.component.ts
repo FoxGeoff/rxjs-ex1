@@ -48,7 +48,20 @@ export interface Category {
 export class AppComponent implements OnInit {
   title = 'rxjs-ex1';
 
+  prodApi = ProdApiData.prodApi;
+  prodCats = CatagoryData.catergories;
+
   ngOnInit() {
+    //Example #3 to transform an objet ProdApi {prod[], total}
+
+
+    of(this.prodApi).subscribe(console.log);
+
+    of(this.prodCats).subscribe(console.log);
+
+
+
+
     // of(2, 4, 6, 8, 5).subscribe(console.log);
 
     /*
@@ -91,10 +104,6 @@ export class AppComponent implements OnInit {
      *      return throwError(err);
      * });
      */
-
-    //Example to transform an objetc ProdApi {prod[], total}
-
-
   }
 
 }
