@@ -6,7 +6,7 @@ import { catchError, map, skip, take, tap } from 'rxjs/operators';
 
 
 export class CatagoryData {
-  static catergories: Catagory[] = [
+  static catergories: Category[] = [
     { id: 1, name: `Food` },
     { id: 2, name: 'Tableware' }
   ];
