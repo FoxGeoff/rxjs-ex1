@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { stringify } from 'querystring';
-import { combineLatest, from, of } from 'rxjs';
+import { combineLatest, from, Observable, of } from 'rxjs';
 import { catchError, map, skip, take, tap } from 'rxjs/operators';
 
 
@@ -10,6 +10,20 @@ export class CatagoryData {
     { id: 1, name: `Food` },
     { id: 2, name: 'Tableware' }
   ];
+}
+
+export class ProdApiElementData {
+  static prodApiElement: ProdApi =
+    {
+      total: 40,
+      prodList: [
+        { id: 10, name: `Apple`, categoryId: 1 },
+        { id: 20, name: `Orange`, categoryId: 1 },
+        { id: 30, name: `Knife`, categoryId: 2 },
+        { id: 40, name: `Fork`, categoryId: 2 }
+      ]
+    }
+
 }
 export class ProdApiData {
   static prodApi: ProdApi[] = [
@@ -50,12 +64,22 @@ export interface Category {
 export class AppComponent implements OnInit {
   title = 'rxjs-ex1';
 
+  // Now place one element of ProdApi into the first position of an observable<ProdApi[]> stream
+  prodApiElement$ = of(ProdApiElementData.prodApiElement)
+  prodApiArray$ = of([ProdApiElementData.prodApiElement]).pipe(tap(p => console.log(`Array of one ProdApi`, p)));
+  // not right
+  data$ = of([this.prodApiElement$])
+  // #2 Try
+  prodApiElement: ProdApi;
+  // => prodApiElement =  this.getProdApi();
+
   prodApi$ = of(ProdApiData.prodApi);
   prodCats$ = of(CatagoryData.catergories);
 
   // Example #3 Add Category to a ProductApi
   productApiWithProdCats$ = combineLatest([
-    this.prodApi$,
+    this.prodApiArray$, // converted into a one element observable array
+    // this.prodApi$,
     this.prodCats$
   ]).pipe(
     map(([productApi, prodCats]) => productApi
@@ -69,17 +93,28 @@ export class AppComponent implements OnInit {
     tap(console.log)
   )
 
-  ngOnInit() {
+
+  getProdApi() {
+    this.prodApiElement$.subscribe(prod => {
+      console.log(`getProdApi()`, prod);
+      return this.prodApiElement = prod;
+    });
+  }
+
+  ngOnInit(): void {
     //Example #3 to transform an objet ProdApi {prod[], total}
-
-
     of(this.prodApi$).subscribe(console.log);
 
     of(this.prodCats$).subscribe(console.log);
 
+    //Example #3A convertion of Observable<ProApi> to Observable<ProApi[]>
+    this.getProdApi();
+    console.log(`Value Check:`,this.prodApiElement);
+
+
     this.productApiWithProdCats$.subscribe(
       data => {
-        console.log(`Product (with Categories):`, data[0] as ProdApi);
+        console.log(`Products (with Categories):`, data[0] as ProdApi);
         // error code
       }
     )
