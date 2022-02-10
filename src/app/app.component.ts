@@ -70,8 +70,7 @@ export class AppComponent implements OnInit {
   // not right
   data$ = of([this.prodApiElement$])
   // #2 Try
-  prodApiElement: ProdApi;
-  // => prodApiElement =  this.getProdApi();
+  prodApiElement: ProdApi = this.getProdApi();
 
   prodApi$ = of(ProdApiData.prodApi);
   prodCats$ = of(CatagoryData.catergories);
@@ -94,11 +93,12 @@ export class AppComponent implements OnInit {
   )
 
 
-  getProdApi() {
+  getProdApi():ProdApi {
     this.prodApiElement$.subscribe(prod => {
       console.log(`getProdApi()`, prod);
       return this.prodApiElement = prod;
     });
+   return this.prodApiElement;
   }
 
   ngOnInit(): void {
@@ -106,6 +106,8 @@ export class AppComponent implements OnInit {
     of(this.prodApi$).subscribe(console.log);
 
     of(this.prodCats$).subscribe(console.log);
+
+    console.log(`getProdApi has returned:`, this.prodApiElement)
 
     //Example #3A convertion of Observable<ProApi> to Observable<ProApi[]>
     this.getProdApi();
