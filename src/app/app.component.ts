@@ -66,11 +66,15 @@ export class AppComponent implements OnInit {
 
   // Now place one element of ProdApi into the first position of an observable<ProdApi[]> stream
   prodApiElement$ = of(ProdApiElementData.prodApiElement)
-  prodApiArray$ = of([ProdApiElementData.prodApiElement]).pipe(tap(p => console.log(`Array of one ProdApi`, p)));
+  // fix #2B
+  // #2 Try yes!
+  prodApiElement: ProdApi = this.getProdApi();
+  prodApiArray$ = of([this.prodApiElement]).pipe(tap(p => console.log(`Array of one ProdApi`, p)));
+  //fix #2A
+  // =>prodApiArray$ = of([ProdApiElementData.prodApiElement]).pipe(tap(p => console.log(`Array of one ProdApi`, p)));
   // not right
   data$ = of([this.prodApiElement$])
-  // #2 Try
-  prodApiElement: ProdApi = this.getProdApi();
+
 
   prodApi$ = of(ProdApiData.prodApi);
   prodCats$ = of(CatagoryData.catergories);
@@ -93,12 +97,12 @@ export class AppComponent implements OnInit {
   )
 
 
-  getProdApi():ProdApi {
+  getProdApi(): ProdApi {
     this.prodApiElement$.subscribe(prod => {
       console.log(`getProdApi()`, prod);
-      return this.prodApiElement = prod;
+      this.prodApiElement = prod;
     });
-   return this.prodApiElement;
+    return this.prodApiElement;
   }
 
   ngOnInit(): void {
@@ -111,7 +115,7 @@ export class AppComponent implements OnInit {
 
     //Example #3A convertion of Observable<ProApi> to Observable<ProApi[]>
     this.getProdApi();
-    console.log(`Value Check:`,this.prodApiElement);
+    console.log(`Value Check:`, this.prodApiElement);
 
 
     this.productApiWithProdCats$.subscribe(
