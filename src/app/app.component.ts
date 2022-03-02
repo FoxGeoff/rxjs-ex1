@@ -25,7 +25,7 @@ export class ProdApiElementData {
     }
 
 }
-export class ProdApiData {
+export class ProdApiArrayData {
   static prodApi: ProdApi[] = [
     {
       total: 40,
@@ -66,9 +66,9 @@ export class AppComponent implements OnInit {
 
   // Now place one element of ProdApi into the first position of an observable<ProdApi[]> stream
   prodApiElement$ = of(ProdApiElementData.prodApiElement)
-  // fix #2B
-  // #2 Try yes!
+  // Subscribe to ProdApi Element stream to return a ProdApi element
   prodApiElement: ProdApi = this.getProdApi();
+  // place the ProdApi element into first element in an observabble array
   prodApiArray$ = of([this.prodApiElement]).pipe(tap(p => console.log(`Array of one ProdApi`, p)));
   //fix #2A
   // =>prodApiArray$ = of([ProdApiElementData.prodApiElement]).pipe(tap(p => console.log(`Array of one ProdApi`, p)));
@@ -76,7 +76,7 @@ export class AppComponent implements OnInit {
   data$ = of([this.prodApiElement$])
 
 
-  prodApi$ = of(ProdApiData.prodApi);
+  prodApi$ = of(ProdApiArrayData.prodApi);
   prodCats$ = of(CatagoryData.catergories);
 
   // Example #3 Add Category to a ProductApi
@@ -96,7 +96,7 @@ export class AppComponent implements OnInit {
     tap(console.log)
   )
 
-
+  // Subscribe to ProdApi Element stream to return a ProdApi element
   getProdApi(): ProdApi {
     this.prodApiElement$.subscribe(prod => {
       console.log(`getProdApi()`, prod);
@@ -106,25 +106,18 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    //Example #3 to transform an objet ProdApi {prod[], total}
-    of(this.prodApi$).subscribe(console.log);
-
-    of(this.prodCats$).subscribe(console.log);
-
-    console.log(`getProdApi has returned:`, this.prodApiElement)
-
     //Example #3A convertion of Observable<ProApi> to Observable<ProApi[]>
     this.getProdApi();
-    console.log(`Value Check:`, this.prodApiElement);
+    console.log(`Value Check: 'getProdApi()' has returnedApi Element:`, this.prodApiElement);
 
-
+    // products part of ProdApi
     this.productApiWithProdCats$.subscribe(
       data => {
         console.log(`Products (with Categories):`, data[0] as ProdApi);
         // error code
       }
     )
-
+    // total part of ProdApi
     this.prodApi$.subscribe(
       data => {
         const total = data[0].total;
